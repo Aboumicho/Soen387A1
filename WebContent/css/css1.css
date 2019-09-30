@@ -1,0 +1,16 @@
+@charset "ISO-8859-1";
+
+div{
+	
+}
+
+form{
+    display: flex;
+    flex-flow: column;
+    width: 25%;
+    justify-content: center;
+    height: 100%;
+    justify-content: space-between;
+    padding: 3rem 3rem 3rem 3rem;	
+}
+

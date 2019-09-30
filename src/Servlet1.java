@@ -112,16 +112,49 @@ public class Servlet1 extends HttpServlet {
      
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String format = request.getParameter("format");
-		
+		PrintWriter out = response.getWriter();
+   	 	response.setContentType("text/plain");
 		System.out.println(format);
 		//Set format		
-		switch(format) {
-					case "null": setHtml(request, response); break;
-					case "text": setPlain(request, response); break;
-					case "html": setHtml(request, response); break;
-					case "xml": setXml(request, response); break;
-					default: response.setContentType("text/html");setPlain(request, response); 
-				}
+		if(format == null) {
+			 response.setContentType("text/html");
+			 out.write("<table> <tr><td> Request Method </td> <td>Get </td><td></td></tr></table> ");
+			 String Headers = "<table><tr><td>Request Headers </td></tr><tr><td>format</td><td>html</td></tr>";
+			 System.out.println(request.getParameterNames().hasMoreElements());
+			 if(request.getParameterNames().hasMoreElements()) {
+				 
+				 while (request.getParameterNames().hasMoreElements()) {
+					 
+			            String paramName = request.getParameterNames().nextElement();
+			            Headers+= "<tr><td>" + paramName + "</td>";
+			 
+			            String[] paramValues = request.getParameterValues(paramName);
+			            for (int i = 0; i < paramValues.length; i++) {
+				           String paramValue = paramValues[i];
+				           Headers+="<td>" + paramValue + "</td></tr>";
+				         }
+			            
+			        }
+			        Headers+="</table>";
+			        out.write(Headers);
+			        out.close();	
+			 }
+			 else {
+				 Headers+="</table>";
+				 out.write(Headers);
+			 }
+			 
+		}
+		else {
+			switch(format) {
+			case "null": setHtml(request, response); break;
+			case "text": setPlain(request, response); break;
+			case "html": setHtml(request, response); break;
+			case "xml": setXml(request, response); break;
+			default: response.setContentType("text/html");setPlain(request, response); 
+		}
+		}
+		
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
