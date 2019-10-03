@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<title>index</title>
-<link rel="stylesheet" href="../css/css1.css" type="text/css" />
-</head>
-<body>
-<div>
-<form action="/Soen387A1/Servlet1" method="Get">
-  name:<br>
-  <input type="text" name="name" >
-  <br>
-  email: <br>
-  <input type="text" name="email">
-  <br><br>
-  <select name="format">
-  	<option value=""></option>
-  	<option value="text">text</option>
-  	<option value="html">html</option>
-  	<option value="xml">xml</option>
-  </select>
-  <br><br>
-  <input type="submit" value="Submit">
-</form> 
-<a href="/Soen387A1/html/index2.html">Link to index2</a>
-</div>
-</body>
+   <head>
+      <meta charset="ISO-8859-1">
+      <title>index</title>
+      <link rel="stylesheet" href="../css/css1.css" type="text/css" />
+   </head>
+   <body>
+      <div class="container">
+         <form action="/Soen387A1/Servlet1" method="Get">
+            <div class="in-form">
+               <div class="text-input">
+                  <label>name:</label>
+                  <input type="text" name="name" >
+               </div>
+               <div class="text-input">
+                  <label>email:</label>
+                  <input type="text" name="email">
+               </div>
+               <div class="text-input">
+                  <select name="format">
+                     <option value=""></option>
+                     <option value="text">text</option>
+                     <option value="html">html</option>
+                     <option value="xml">xml</option>
+                  </select>
+               </div>
+               <div class="text-input">
+                  <input type="submit" value="Submit">
+               </div>
+               <a href="/Soen387A1/html/index2.html">Link to index2</a>
+            </div>
+         </form>
+      </div>
+   </body>
 </html>

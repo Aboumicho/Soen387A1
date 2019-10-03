@@ -2,28 +2,30 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link rel="stylesheet" href="../css/css2.css" type="text/css" />
 <title>index2</title>
 </head>
 <body>
-<div>
+<div class="container">
 <form action="/Soen387A1/Servlet1" method="Post">
-  name:<br>
+  <div class="input-container"><label>name:</label>
   <input type="text" name="name" >
-  <br>
-  email: <br>
+</div>
+  <div class="input-container"><label>email:</label>
   <input type="text" name="email">
-  <br><br>
+</div>
+<div class="input-container" id="select-container">
   <select name="format">
   	<option value=""></option>
   	<option value="text">text</option>
   	<option value="html">html</option>
   	<option value="xml">xml</option>
   </select>
-  <br><br>
+ </div>
+  
   <input type="submit" value="Submit">
-</form> 
-
 <a href="/Soen387A1/html/index.html">Link to index</a>
+</form> 
 </div>
 </body>
 </html>

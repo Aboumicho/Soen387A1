@@ -33,7 +33,7 @@ public class Servlet1 extends HttpServlet {
     	 PrintWriter out = response.getWriter();
     	 response.setContentType("text/plain");   	 
          Enumeration<String> parameterNames = request.getParameterNames();
-         out.write("Request Method: Get \nRequest Headers: \n");
+         out.write("Request Method:"+ request.getMethod()+"\nRequest Headers: \n");
          while (parameterNames.hasMoreElements()) {
   
              String paramName = parameterNames.nextElement();
@@ -55,9 +55,11 @@ public class Servlet1 extends HttpServlet {
     public void setHtml(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
     	PrintWriter out = response.getWriter();
     	response.setContentType("text/html"); 
+    	String stylesheet = "<link rel=\'stylesheet\' type=\'text/css\' href=\'./css/css1.css\' /> ";
+		out.write(stylesheet);
         Enumeration<String> parameterNames = request.getParameterNames();
         //Request Method
-        out.write("<table> <tr><td> Request Method </td> <td>Get </td><td></td></tr></table> ");
+        out.write("<table> <tr><td> Request Method </td> <td>" + request.getMethod() + " </td></tr></table> ");
         String Headers = "<table><tr><td>Request Headers </td></tr>";
         
         while (parameterNames.hasMoreElements()) {
@@ -82,7 +84,7 @@ public class Servlet1 extends HttpServlet {
     	response.setContentType("text/xml"); 
         Enumeration<String> parameterNames = request.getParameterNames();
         //Request Method
-        String Headers = "<response> <request-method> Get </request-method><request-headers>";
+        String Headers = "<response> <request-method>" + request.getMethod()+ " </request-method><request-headers>";
         String Format = "";
         
         //request-headers
@@ -113,38 +115,16 @@ public class Servlet1 extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String format = request.getParameter("format");
 		PrintWriter out = response.getWriter();
+		
    	 	response.setContentType("text/plain");
 		System.out.println(format);
 		//Set format		
 		if(format == null) {
 			 response.setContentType("text/html");
-			 out.write("<table> <tr><td> Request Method </td> <td>Get </td><td></td></tr></table> ");
-			 String Headers = "<table><tr><td>Request Headers </td></tr><tr><td>format</td><td>html</td></tr>";
-			 System.out.println(request.getParameterNames().hasMoreElements());
-			 if(request.getParameterNames().hasMoreElements()) {
-				 
-				 while (request.getParameterNames().hasMoreElements()) {
-					 
-			            String paramName = request.getParameterNames().nextElement();
-			            Headers+= "<tr><td>" + paramName + "</td>";
+			 out.write("<table> <tr><td> Request Method </td> <td>" + request.getMethod() + "</td></tr></table> ");
 			 
-			            String[] paramValues = request.getParameterValues(paramName);
-			            for (int i = 0; i < paramValues.length; i++) {
-				           String paramValue = paramValues[i];
-				           Headers+="<td>" + paramValue + "</td></tr>";
-				         }
-			            
-			        }
-			        Headers+="</table>";
-			        out.write(Headers);
-			        out.close();	
-			 }
-			 else {
-				 Headers+="</table>";
-				 out.write(Headers);
-			 }
+		}//Base case with no parameter
 			 
-		}
 		else {
 			switch(format) {
 			case "null": setHtml(request, response); break;

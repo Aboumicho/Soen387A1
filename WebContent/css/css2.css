@@ -1,1 +1,62 @@
 @charset "ISO-8859-1";
+
+html{
+	height: 100%;
+}
+
+body{
+	height: 100%;
+}
+
+.container{
+	height: 100%;
+	display: flex;
+    flex-flow: column;
+    justify-content: center;
+}
+
+#select-container{
+	width:100%;
+}
+
+input{
+	width: 100%;
+    border: 0;
+    border-bottom: 1px solid rgba(195, 195, 216, 0.5);
+    font-size: 13px;
+    font-weight: 300;
+    color: #797A9E;
+    letter-spacing: 0.11em;
+    padding: 1rem 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+select{
+	width: 100%;
+	padding: 1rem 1rem;
+	
+}
+
+
+label{
+	margin-left: 10px;
+}
+
+form{
+    height: 60%;
+    justify-content: space-between;
+    display: flex;
+    flex-flow: column;
+    padding-left: 25%;
+    padding-right: 25%;
+}
+
+form > * {
+	margin: 10px;
+
+}
+
+a{
+	margin-left: 10px;
+}
