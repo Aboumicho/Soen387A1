@@ -100,7 +100,7 @@ public class Servlet1 extends HttpServlet {
 	             Format += paramValue + "</" + paramName + ">";
 	        }
         }
-        Headers += "</request-headers><query-string><format>xml</format>";
+        Headers += "</request-headers><query-string>";
         Headers += Format;
         Headers+="</query-string></response>";
         out.write(Headers);

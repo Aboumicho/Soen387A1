@@ -13,7 +13,11 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.util.HashMap;
 
+import javax.servlet.ServletException;
+
+import com.sun.javafx.collections.MappingChange.Map;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -24,7 +28,7 @@ public class ServerInstance {
 
 	private static final String USER_AGENT = null;
 
-	public static void main(String [] args) throws IOException {
+	public static void main(String [] args) throws IOException, ServletException {
 		  HttpServer server = HttpServer.create(new InetSocketAddress(8011), 0);
 	      //Declare contexts
 		  HttpContext context = server.createContext("/");
@@ -61,6 +65,7 @@ public class ServerInstance {
 		String currentDirPATH = System.getProperty("user.dir");
 		File file_index = new File(currentDirPATH + "\\WebContent\\html\\index2.html");
 		String response = readFile(file_index);
+		
 		sendResponse(exchange, response);
 	}
 	
@@ -73,6 +78,23 @@ public class ServerInstance {
 		System.out.println(url);
 		if(url.equals("/")|| url.equals("/index")) {
 			sendResponse(exchange, response);	
+		}
+		else if(url.contains("/Servlet1")) {
+			String params = exchange.getRequestURI().getQuery();
+			HashMap<String, String> parameters_map = GetParametersMap(params);
+			RequestHandler handler = new RequestHandler();
+			String getter = "";
+			System.out.println(parameters_map.get("format"));
+			try {
+				getter = handler.mapRequest(parameters_map.get("format"), parameters_map, exchange);
+				sendResponse(exchange, getter);
+			}
+			catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+			
+			System.out.println(getter);
+			exchange.getRequestMethod();
 		}
 		else {
 			sendBadResponse(exchange);
@@ -94,7 +116,7 @@ public class ServerInstance {
 	
 	private static void sendResponse(HttpExchange exchange, String response) throws IOException {
 		String encoding = "UTF-8";
-		exchange.getResponseHeaders().set("Context-Type", "text/html; charset=" + encoding);
+		exchange.getResponseHeaders().set("Context-Type", "text/xml; charset=" + encoding);
 		exchange.sendResponseHeaders(200, response.getBytes().length);//response code and length
 		Writer out = new OutputStreamWriter(exchange.getResponseBody(), encoding);
 	    out.write(response);
@@ -112,43 +134,19 @@ public class ServerInstance {
 	
 	}
 	
-	private static void sendPost() throws Exception{
-		String url = "http://localhost:8011/Soen387A1/Servlet1";
-	    URL obj = new URL(url);
-	    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-	    //add reuqest header
-	    con.setRequestMethod("POST");
-	    con.setRequestProperty("User-Agent", USER_AGENT);
-	    con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-	    String urlParameters = "name=C02G8416DRJM&email=micho&format=text";
-
-	    // Send post request
-	    con.setDoOutput(true);
-	    DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-	    wr.writeBytes(urlParameters);
-	    wr.flush();
-	    wr.close();
-
-	    int responseCode = con.getResponseCode();
-	    System.out.println("\nSending 'POST' request to URL : " + url);
-	    System.out.println("Post parameters : " + urlParameters);
-	    System.out.println("Response Code : " + responseCode);
-
-	    BufferedReader in = new BufferedReader(
-	            new InputStreamReader(con.getInputStream()));
-	    String inputLine;
-	    StringBuffer response = new StringBuffer();
-
-	    while ((inputLine = in.readLine()) != null) {
-	        response.append(inputLine);
-	    }
-	    in.close();
-
-	    //print result
-	    System.out.println(response.toString());
-	}
 	
+	public static HashMap<String, String> GetParametersMap(String query) {
+	    HashMap<String, String> map = new HashMap<String, String>();
+	    //Split parameters
+	    for (String param : query.split("&")) {
+	        String[] entry = param.split("=");
+	        if (entry.length > 1) {
+	            map.put(entry[0], entry[1]);
+	        }else{
+	            map.put(entry[0], "");
+	        }
+	    }
+	    return map;
+	}
 
 }
