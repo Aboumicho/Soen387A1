@@ -64,8 +64,7 @@ public class ServerInstance {
 	public static void handleRequest2(HttpExchange exchange) throws IOException{
 		String currentDirPATH = System.getProperty("user.dir");
 		File file_index = new File(currentDirPATH + "\\WebContent\\html\\index2.html");
-		String response = readFile(file_index);
-		
+		String response = readFile(file_index);	
 		sendResponse(exchange, response);
 	}
 	
