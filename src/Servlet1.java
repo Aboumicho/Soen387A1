@@ -58,15 +58,20 @@ public class Servlet1 extends HttpServlet {
     	String stylesheet = "<link rel=\'stylesheet\' type=\'text/css\' href=\'./css/css1.css\' /> ";
 		out.write(stylesheet);
         Enumeration<String> parameterNames = request.getParameterNames();
+        String format = request.getParameter("format");
+        
         //Request Method
         out.write("<table> <tr><td> Request Method </td> <td>" + request.getMethod() + " </td></tr></table> ");
         String Headers = "<table><tr><td>Request Headers </td></tr>";
-        
+        //Case format was not specified
+        if(format == null || format =="null") {
+        	Headers+= "<tr><td>format</td><td>html</td> </tr> " ;
+        }
         while (parameterNames.hasMoreElements()) {
  
             String paramName = parameterNames.nextElement();
             Headers+= "<tr><td>" + paramName + "</td>";
- 
+            
             String[] paramValues = request.getParameterValues(paramName);
             for (int i = 0; i < paramValues.length; i++) {
 	           String paramValue = paramValues[i];
@@ -119,10 +124,9 @@ public class Servlet1 extends HttpServlet {
    	 	response.setContentType("text/plain");
 		System.out.println(format);
 		//Set format		
-		if(format == null) {
+		if(format == null || format.equals("null")) {
 			 response.setContentType("text/html");
-			 out.write("<table> <tr><td> Request Method </td> <td>" + request.getMethod() + "</td></tr></table> ");
-			 
+			 setHtml(request, response);
 		}//Base case with no parameter
 			 
 		else {
