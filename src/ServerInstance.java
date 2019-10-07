@@ -34,8 +34,8 @@ public class ServerInstance {
 		  HttpContext context = server.createContext("/");
 		  HttpContext context1 = server.createContext("/index");
 	      HttpContext context2 = server.createContext("/index2");
-	      HttpContext context3 = server.createContext("/css1");
-	      HttpContext context4 = server.createContext("/css2");
+	      HttpContext context3 = server.createContext("/css/css1");
+	      HttpContext context4 = server.createContext("/css/css2");
 	     
 	      
 	      context.setHandler(ServerInstance::handleRequest);
@@ -50,14 +50,16 @@ public class ServerInstance {
 		String currentDirPATH = System.getProperty("user.dir");
 		File file_index = new File(currentDirPATH + "\\WebContent\\css\\css1.css");
 		String response = readFile(file_index);
-		sendResponse(exchange, response);
+		String type = "text/css";
+		sendResponse(exchange, response, type);
 	}
 	
 	public static void handleRequest4(HttpExchange exchange) throws IOException{
 		String currentDirPATH = System.getProperty("user.dir");
 		File file_index = new File(currentDirPATH + "\\WebContent\\css\\css2.css");
 		String response = readFile(file_index);
-		sendResponse(exchange, response);
+		String type = "text/css";
+		sendResponse(exchange, response, type);
 	}
 	
 	
@@ -65,7 +67,8 @@ public class ServerInstance {
 		String currentDirPATH = System.getProperty("user.dir");
 		File file_index = new File(currentDirPATH + "\\WebContent\\html\\index2.html");
 		String response = readFile(file_index);	
-		sendResponse(exchange, response);
+		String type = "text/html";
+		sendResponse(exchange, response, type);
 	}
 	
 	public static void handleRequest(HttpExchange exchange) throws IOException{
@@ -75,8 +78,10 @@ public class ServerInstance {
 		String response = readFile(file_index);
 		String url = exchange.getRequestURI().toString();
 		System.out.println(url);
+		String type = "text/html";
 		if(url.equals("/")|| url.equals("/index")) {
-			sendResponse(exchange, response);	
+			
+			sendResponse(exchange, response, type);	
 		}
 		else if(url.contains("/Servlet1")) {
 			String params = exchange.getRequestURI().getQuery();
@@ -86,7 +91,7 @@ public class ServerInstance {
 			System.out.println(parameters_map.get("format"));
 			try {
 				getter = handler.mapRequest(parameters_map.get("format"), parameters_map, exchange);
-				sendResponse(exchange, getter);
+				sendResponse(exchange, getter, type);
 			}
 			catch(Exception e) {
 				System.out.println(e.getMessage());
@@ -113,9 +118,9 @@ public class ServerInstance {
 		return text;
 	}
 	
-	private static void sendResponse(HttpExchange exchange, String response) throws IOException {
+	private static void sendResponse(HttpExchange exchange, String response, String type) throws IOException {
 		String encoding = "UTF-8";
-		exchange.getResponseHeaders().set("Context-Type", "text/xml; charset=" + encoding);
+		exchange.getResponseHeaders().set("Context-Type", type + "; charset=" + encoding);
 		exchange.sendResponseHeaders(200, response.getBytes().length);//response code and length
 		Writer out = new OutputStreamWriter(exchange.getResponseBody(), encoding);
 	    out.write(response);
